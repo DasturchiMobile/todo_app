@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/features/todo/data/extensions/todo_status_extension.dart';
 import 'package:todo_app/features/todo/domain/entity/todo_entity.dart';
 import 'package:todo_app/features/todo/domain/enums/todo_status_enum.dart';
@@ -102,7 +103,7 @@ class TaskListItem extends StatelessWidget {
       case "doing":
         context.read<TodoBloc>().add(
           TodoEvent.updateTodo(
-            todo: todo.copyWith(status: TodoStatus.done.name),
+            todo: todo.copyWith(status: TodoStatus.done.name, updatedAt: DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now())),
           ),
         );
         break;
