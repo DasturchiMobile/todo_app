@@ -12,7 +12,7 @@ import SwiftUI
 struct todo_widgetBundle: WidgetBundle {
     var body: some Widget {
         todo_widget()
-//        todo_widgetControl()
-//        todo_widgetLiveActivity()
+        todo_widgetControl()
+        todo_widgetLiveActivity()
     }
 }
