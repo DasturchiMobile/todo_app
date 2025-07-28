@@ -9,6 +9,7 @@ import 'package:todo_app/features/todo/domain/usecases/delete_todo_usecase.dart'
 import 'package:todo_app/features/todo/domain/usecases/fetch_todo_usecase.dart';
 
 import '../../../../../core/error/failure/failure_model.dart';
+import '../../../../../core/native/native_sender.dart';
 import '../../../domain/entity/todo_entity.dart';
 import '../../../domain/enums/todo_status_enum.dart';
 import '../../../domain/usecases/update_todo_usecase.dart';
@@ -37,12 +38,11 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<_UpdateTodo>(_updateTodo);
   }
 
-  final MethodChannel _channel = MethodChannel('uz.mobildasturchi.todo_app/statuses');
 
 
   _fetchTodos(_FetchTodos event, Emitter<TodoState> emit) async {
     final data = await fetchTodoUseCase(NoParams());
-    await _sendToNative(data);
+    await NativeSender.sendToNative(data);
     emit(TodoState.success(todos: data));
   }
 
@@ -61,17 +61,5 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     add(TodoEvent.fetchTodos());
   }
 
-  _sendToNative(List<Todo> todos) async{
-    final Map<String, int> data = {
-      'all': todos.length,
-      'todo': todos.where((e) => e.status == TodoStatus.todo.name).length,
-      'done': todos.where((e) => e.status == TodoStatus.done.name).length,
-    };
-    try {
-      final result = await _channel.invokeMethod('statuses', data);
-      log(result.toString());
-    } on PlatformException catch (e) {
-      log('Nativega yuborishda xatolik: ${e.message}');
-    }
-  }
+
 }

@@ -34,7 +34,7 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     private func loadStats() -> (all: Int, todo: Int, done: Int) {
-        let defaults = UserDefaults(suiteName: "group.uz.mobildasturchi.todo_app")
+        let defaults = UserDefaults(suiteName: "group.uz.mobildasturchi.todoApp")
         let stats = defaults?.dictionary(forKey: "todo_stats") as? [String: Int] ?? [:]
 
         return (
